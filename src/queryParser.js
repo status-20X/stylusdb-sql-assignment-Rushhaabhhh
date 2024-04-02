@@ -1,50 +1,63 @@
-// function parseQuery(query) {
-//     const selectRegex = /SELECT (.+) FROM (.+)/i;
-//     const match = query.match(selectRegex);
+function parseQuery3(query) {
+    const selectRegex = /SELECT (.+) FROM (.+)/i;
+    const match = query.match(selectRegex);
 
-//     if (match) {
-//         const [, fields, table] = match;
-//         return {
-//             fields: fields.split(',').map(field => field.trim()),
-//             table: table.trim()
-//         };
-//     } else {
-//         throw new Error('Invalid query format');
-//     }
-// }
+    if (match) {
+        const [, fields, table] = match;
+        return {
+            fields: fields.split(',').map(field => field.trim()),
+            table: table.trim()
+        };
+    } else {
+        throw new Error('Invalid query format');
+    }
+}
+module.exports = parseQuery3;
 
-// module.exports = parseQuery;
+function parseQuery5(query) {
+    const selectRegex = /SELECT (.+?) FROM (.+?)(?: WHERE (.*))?$/i;
+    const match = query.match(selectRegex);
 
+    if (match) {
+        const [, fields, table, whereClause] = match;
+        return {
+            fields: fields.split(',').map(field => field.trim()),
+            table: table.trim(),
+            whereClause: whereClause ? whereClause.trim() : null
+        };
+    } else {
+        throw new Error('Invalid query format');
+    }
+}
+module.exports = parseQuery5;
 
-// function parseQuery(query) {
-//     const selectRegex = /SELECT (.+?) FROM (.+?)(?: WHERE (.*))?$/i;
-//     const match = query.match(selectRegex);
+function parseQuery6(query) {
+    const selectRegex = /SELECT (.+?) FROM (.+?)(?: WHERE (.*))?$/i;
+    const match = query.match(selectRegex);
 
-//     if (match) {
-//         const [, fields, table, whereString] = match;
-//         const whereClauses = whereString ? parseWhereClause(whereString) : [];
-//         return {
-//             fields: fields.split(',').map(field => field.trim()),
-//             table: table.trim(),
-//             whereClauses
-//         };
-//     } else {
-//         throw new Error('Invalid query format');
-//     }
-// }
+    if (match) {
+        const [, fields, table, whereString] = match;
+        const whereClauses = whereString ? parseWhereClause6(whereString) : [];
+        return {
+            fields: fields.split(',').map(field => field.trim()),
+            table: table.trim(),
+            whereClauses
+        };
+    } else {
+        throw new Error('Invalid query format');
+    }
+}
 
-// function parseWhereClause(whereString) {
-//     const conditions = whereString.split(/ AND | OR /i);
-//     return conditions.map(condition => {
-//         const [field, operator, value] = condition.split(/\s+/);
-//         return { field, operator, value };
-//     });
-    
-// }
+function parseWhereClause6(whereString) {
+    const conditions = whereString.split(/ AND | OR /i);
+    return conditions.map(condition => {
+        const [field, operator, value] = condition.split(/\s+/);
+        return { field, operator, value };
+    });
+}
+module.exports = parseQuery6;
 
-// module.exports = parseQuery;
-
-function parseWhereClause(whereString) {
+function parseWhereClause7(whereString) {
     const conditionRegex = /(.*?)(=|!=|>|<|>=|<=)(.*)/;
     return whereString.split(/ AND | OR /i).map(conditionString => {
         const match = conditionString.match(conditionRegex);
@@ -55,4 +68,3 @@ function parseWhereClause(whereString) {
         throw new Error('Invalid WHERE clause format');
     });
 }
-
